@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Example : MonoBehaviour
 {
-	private DiffItemSizeListManager _diffItemSizeListManager;
+	private SameItemListManager _diffItemSizeListManager;
 
 	public Button initBtn;
 
@@ -23,16 +23,15 @@ public class Example : MonoBehaviour
 	private int currInputIndex;
 
 	void Start () {
-		_diffItemSizeListManager = new DiffItemSizeListManager();
+		_diffItemSizeListManager = new SameItemListManager();
 		_diffItemSizeListManager.InitData(ScrollRect);
+		_diffItemSizeListManager.sameItemCount = 2;
+		_diffItemSizeListManager.sameItemDis = 4;
 		initBtn.onClick.AddListener(InitList);
 		addBtn.onClick.AddListener(AddListItem);
 		clearBtn.onClick.AddListener(ClearList);
 		itemTypeChose.ClearOptions();
 		itemTypeChose.options.Add(new Dropdown.OptionData("main"));
-		itemTypeChose.options.Add(new Dropdown.OptionData("child1"));
-		itemTypeChose.options.Add(new Dropdown.OptionData("child2"));
-
 	}
 
 	void InitList()
@@ -67,8 +66,9 @@ public class Example : MonoBehaviour
 
 		for (int i = 0; i < loopTime; i++)
 		{
-			_diffItemSizeListManager.AddListItem(new ListData(path,length));
+			_diffItemSizeListManager.AddListItem(new ListData(path,length,length));
 		}
+		_diffItemSizeListManager.InitList();
 	}
 	void ClearList()
 	{

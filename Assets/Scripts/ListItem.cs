@@ -30,6 +30,8 @@ public class ListItem
         {
             Debug.Log("点击元素的索引为"+listData.index);
         });
+        Text text = listData.AddUIToDic("test1","Text","Text") as Text;
+        text.text = listData.index.ToString();
     }
    
 }
@@ -43,12 +45,20 @@ public  class ListData
     public readonly float length;
     public readonly string loadPath;
     public int index;
+    public float otherLength;//令一边的长
     public GameObject listObj;
     public Dictionary<string, object> UIDic;
     public ListData(string _loadPath,float _length)
     {
         length = _length;
         loadPath = _loadPath;
+        UIDic = new Dictionary<string, object>();
+    }
+    public ListData(string _loadPath,float _length,float _otherLength)
+    {
+        length = _length;
+        loadPath = _loadPath;
+        otherLength = _otherLength;
         UIDic = new Dictionary<string, object>();
     }
 
