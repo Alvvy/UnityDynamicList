@@ -9,3 +9,9 @@
 (2)Support for different sized elements
     
     横竖都能支持 元素的长宽均可不同
+
+---
+![竖](https://github.com/Alvvy/UnityDynamicList/blob/master/Pic/Vertical.png)
+
+![横](https://github.com/Alvvy/UnityDynamicList/blob/master/Pic/Horizontal.png)
+
