@@ -19,39 +19,61 @@ public class ListItem
 
     public ListData listData;
     public bool isInPool;
-    
+
     public void BlindUI()
     {
-        if (listData == null)
+        listData.listObj = itemObj;
+        listData.UIDic.Clear();
+        Button btn = listData.AddUIToDic("test","Button","") as Button;
+        btn.onClick.RemoveAllListeners();
+        btn.onClick.AddListener(() =>
         {
-            Debug.LogError("listData 为 null");
-            return;
-        }
-        listData.btn = itemObj.GetComponent<Button>();
+            Debug.Log("点击元素的索引为"+listData.index);
+        });
     }
+   
 }
 
-public enum ItemType
-{
-    Main = 0,
-    Child1 = 1,
-    Child2 = 2,
 
-}
 
-public class ListData
+
+
+public  class ListData
 {
-    public readonly ItemType itemType;
     public readonly float length;
+    public readonly string loadPath;
     public int index;
-    public Button btn;
-    public ListData(ItemType _type)
+    public GameObject listObj;
+    public Dictionary<string, object> UIDic;
+    public ListData(string _loadPath,float _length)
     {
-        itemType = _type;
-        length = ItemConst.GetListWidthLength(_type);
+        length = _length;
+        loadPath = _loadPath;
+        UIDic = new Dictionary<string, object>();
     }
-    
+
+    public object AddUIToDic(string _name,string T,string _path)
+    {
+        if (listObj == null)
+        {
+            return null;
+        }
+        if (!UIDic.ContainsKey(_name))
+        {
+            if (_path == "")
+            {
+                UIDic.Add(_name,listObj.GetComponent(T));
+            }
+            else
+            {
+                UIDic.Add(_name,listObj.transform.Find(_path).GetComponent(T));
+            }
+        }
+        return UIDic[_name];
+    }
 }
+
+
 
 
 

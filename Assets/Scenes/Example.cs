@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Example : MonoBehaviour
 {
-	private ListManager listManager;
+	private DiffItemSizeListManager _diffItemSizeListManager;
 
 	public Button initBtn;
 
@@ -23,36 +23,40 @@ public class Example : MonoBehaviour
 	private int currInputIndex;
 
 	void Start () {
-		listManager = new ListManager();
-		listManager.InitData(ScrollRect);
+		_diffItemSizeListManager = new DiffItemSizeListManager();
+		_diffItemSizeListManager.InitData(ScrollRect);
 		initBtn.onClick.AddListener(InitList);
 		addBtn.onClick.AddListener(AddListItem);
 		clearBtn.onClick.AddListener(ClearList);
 		itemTypeChose.ClearOptions();
-		itemTypeChose.options.Add(new Dropdown.OptionData(ItemType.Main.ToString()));
-		itemTypeChose.options.Add(new Dropdown.OptionData(ItemType.Child1.ToString()));
-		itemTypeChose.options.Add(new Dropdown.OptionData(ItemType.Child2.ToString()));
+		itemTypeChose.options.Add(new Dropdown.OptionData("main"));
+		itemTypeChose.options.Add(new Dropdown.OptionData("child1"));
+		itemTypeChose.options.Add(new Dropdown.OptionData("child2"));
 
 	}
 
 	void InitList()
 	{
-		listManager.InitList();
+		_diffItemSizeListManager.InitList();
 	}
 
 	void AddListItem()
 	{
-		ItemType itemType = ItemType.Main;
+		string path = "main";
+		float length = 0;
 		if (itemTypeChose.value == 0)
 		{
-			itemType = ItemType.Main;
+			path = "main";
+			length = 100;
 		}
 		else if(itemTypeChose.value == 1)
 		{
-			itemType = ItemType.Child1;
+			path = "child1";
+			length = 50;
 		}else if(itemTypeChose.value == 2)
 		{
-			itemType = ItemType.Child2;
+			path = "child2";
+			length = 30;
 		}
 
 		int loopTime = 1;
@@ -63,58 +67,13 @@ public class Example : MonoBehaviour
 
 		for (int i = 0; i < loopTime; i++)
 		{
-			listManager.AddListItem(new ListData(itemType));
-
+			_diffItemSizeListManager.AddListItem(new ListData(path,length));
 		}
 	}
-
-
 	void ClearList()
 	{
-		listManager.ClearList();
-		listManager.ClearConent();
-		listManager.ClearData();
-	}
-}
-
-
-
-public static class ItemConst
-{
-    
-	private static string mainPrefabPath = "main";
-	private static string child1PrefabPath = "child1";
-	private static float mainPrefabLength = 100;
-	private static float child1PrefabLength = 50;
-	private static string child2PrefabPath = "child2";
-	private static float child2PrefabLength = 30;
-	public static string GetPrefabPath(ItemType type)
-	{
-		switch (type)
-		{
-			case ItemType.Main:
-				return mainPrefabPath;
-			case  ItemType.Child1:
-				return child1PrefabPath;
-			case  ItemType.Child2:
-				return child2PrefabPath;
-			default:
-				return "";
-		}
-	}
-
-	public static float GetListWidthLength(ItemType type)
-	{
-		switch (type)
-		{
-			case ItemType.Main:
-				return mainPrefabLength;
-			case  ItemType.Child1:
-				return child1PrefabLength;
-			case  ItemType.Child2:
-				return child2PrefabLength;
-			default:
-				return 0;
-		}
+		_diffItemSizeListManager.ClearList();
+		_diffItemSizeListManager.ClearConent();
+		_diffItemSizeListManager.ClearData();
 	}
 }

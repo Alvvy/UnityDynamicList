@@ -6,7 +6,7 @@ using UnityEngine.Experimental.UIElements;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class ListManager
+public class DiffItemSizeListManager
 {
 	private ScrollRect scrollRect;
 	
@@ -139,9 +139,10 @@ public class ListManager
 		float currPos = currListOffset;
 		for (int i = currFirstItemIndex; i < GetListLastIndex(); i++)
 		{
-			ListItem item = ListPool.Instance().GetItemByType(listDatas[i].itemType);
+			ListItem item = ListPool.Instance().GetItemByType(listDatas[i].loadPath);
 			item.listData = listDatas[i];
 			item.ItemObj.transform.SetParent(scrollRect.content,false);
+			SetRectTransform(item.ItemObj.transform as RectTransform);
 			if (isHorizontal)
 			{
 				item.ItemObj.transform.localPosition = new Vector3(currPos,0,0);
@@ -153,12 +154,6 @@ public class ListManager
 			}
 			listItems.Add(item);
 			item.BlindUI();
-			SetRectTransform(item.ItemObj.transform as RectTransform);
-			item.listData.btn.onClick.RemoveAllListeners();
-			item.listData.btn.onClick.AddListener(() =>
-			{
-				Debug.Log("点击元素的索引为"+item.listData.index);
-			});
 			currPos = currPos + item.listData.length;
 			item.ItemObj.name = i.ToString();
 		}
@@ -239,7 +234,7 @@ public class ListManager
 	}
 
 
-	private void SetRectTransform(RectTransform obj)
+	private  void SetRectTransform(RectTransform obj)
 	{
 		if (isHorizontal)
 		{

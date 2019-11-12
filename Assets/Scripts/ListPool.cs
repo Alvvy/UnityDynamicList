@@ -13,7 +13,7 @@ public class ListPool
 
       public  GameObject pool; //存放无用的list实体
 
-      public  Dictionary<ItemType, GameObject> loadObjectsPool;//缓存不同类型的list资源
+      public  Dictionary<string, GameObject> loadObjectsPool;//缓存不同类型的list资源
 
       public static ListPool instance;
       public static ListPool Instance()
@@ -23,7 +23,7 @@ public class ListPool
                   instance = new ListPool();
                   instance.pool=  new GameObject("Pool");
                   instance.listPool = new List<ListItem>();
-                  instance.loadObjectsPool = new Dictionary<ItemType, GameObject>();
+                  instance.loadObjectsPool = new Dictionary<string, GameObject>();
             }
             return instance;
       }
@@ -33,20 +33,19 @@ public class ListPool
       /// </summary>
       /// <param name="type"></param>
       /// <returns></returns>
-      public  ListItem GetItemByType(ItemType type)
+      public  ListItem GetItemByType(string _path)
       {
             ListItem temp = null;
             foreach (var item in listPool)
             {
-                  if (item.listData.itemType == type && item.isInPool)
+                  if (item.listData.loadPath == _path && item.isInPool)
                   {
                         temp = item;
                   }
             }
-
             if (temp == null)
             {
-                  temp = CreateItem(type);
+                  temp = CreateItem(_path);
             }
             temp.isInPool = false;
             ShowHideObj(temp.ItemObj, true);
@@ -64,18 +63,18 @@ public class ListPool
       }
 
 
-      private  ListItem CreateItem(ItemType type)
+      private  ListItem CreateItem(string _path)
       {
             GameObject obj;
-            if (loadObjectsPool.ContainsKey(type))
+            if (loadObjectsPool.ContainsKey(_path))
             {
-                  obj = loadObjectsPool[type];
+                  obj = loadObjectsPool[_path];
             }
             else
             {
 
-                  obj = Resources.Load<GameObject>(ItemConst.GetPrefabPath(type));
-                  loadObjectsPool.Add(type,obj);
+                  obj = Resources.Load<GameObject>(_path);
+                  loadObjectsPool.Add(_path,obj);
             }
             ListItem temp = new ListItem(obj);
             listPool.Add(temp);
